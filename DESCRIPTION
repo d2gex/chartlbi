@@ -1,0 +1,10 @@
+Package: iim_lbi
+Type: Package
+Title: Enhance existing LBI data-poor method provided by ICES at https://raw.githubusercontent.com/ices-tools-dev/LBI_shiny/master/utilities.R
+Version: 1.0
+Date: 2024-03-11
+Author: d2gex
+Maintainer: dgarcia@iim.csic.es
+Description: Improve existing LBI implementation by removing obsolete dependencies, fixing bugs and providing
+    an alternative way of visualising the results.
+License: MIT License
