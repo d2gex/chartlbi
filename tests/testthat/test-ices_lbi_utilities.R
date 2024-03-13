@@ -1,4 +1,4 @@
-test_that("matrix contains two max values", {
+test_that("matrix contains two max values for year 2023", {
   freq_x_wal_df <- freq_df * wal_df
   max_value <- max(freq_x_wal_df, na.rm = TRUE)
   num_max_values <- 2
