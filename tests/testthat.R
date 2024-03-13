@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(iim_lbi)
+library(prettylib)
 
-test_check("iim_lbi")
+test_check("prettylib")
