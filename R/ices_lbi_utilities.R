@@ -1,4 +1,3 @@
-library("reshape2")
 #' International Council for the Exploration of the Seas
 #'
 #' This is a modified version of the original "utilities.R" file that ICES used to implement lBI.
@@ -7,6 +6,8 @@ library("reshape2")
 #'
 #' @source  https://raw.githubusercontent.com/ices-tools-dev/LBI_shiny/master/utilities.R
 'ices_lbi_utilities.R'
+
+library("reshape2")
 
 bin_mat <- function(data, binwidth) {
   # First column is the current length class
