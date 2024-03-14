@@ -6,13 +6,15 @@ library("stringr")
 OutputPlotter <- R6Class("OutputPlotter", public = list(
 
   data = NULL,
+  plot_context = NULL,
   thresholds = NULL,
-  initialize = function(data, thresholds) {
+  initialize = function(data, plot_context, thresholds) {
     self$data <- data
+    self$plot_context <- plot_context
     self$thresholds <- thresholds
   },
-  generate_outputs = function(title_size, title) {
-    return(private$build_lbi_tower(title_size, title))
+  generate_outputs = function() {
+    return(private$build_lbi_tower())
   }
 ), private = list(
 
@@ -43,7 +45,10 @@ OutputPlotter <- R6Class("OutputPlotter", public = list(
     g <- ggplot(data, aes(x = factor(years), y = .data[[colname]])) +
       geom_line(aes(group = 1)) +
       geom_point(aes(colour = fitness)) +
-      geom_hline(yintercept = threshold, linetype = 'dotted', col = 'green', linewidth = 1.2) +
+      geom_hline(yintercept = threshold,
+                 linetype = 'dotted',
+                 col = 'green',
+                 linewidth = self$plot_context$threshold_line_width) +
       scale_color_manual(values = c(yes = "limegreen", no = 'red4')) +
       theme_bw() +
       xlab('Years') +
@@ -52,8 +57,9 @@ OutputPlotter <- R6Class("OutputPlotter", public = list(
     if (is_bottom) {
       g <- g +
         theme(
-          axis.text.x = element_text(angle = 90, size = 15),
-          axis.title.x = element_text(size = 18),
+          axis.text.x = element_text(angle = self$plot_context$x_text_angle, size = self$plot_context$x_text_size),
+          axis.text.y = element_text(angle = self$plot_context$y_text_angle, size = self$plot_context$y_text_size),
+          axis.title.x = element_text(size = self$plot_context$x_title_size),
           legend.position = "none"
         )
     }
@@ -62,9 +68,12 @@ OutputPlotter <- R6Class("OutputPlotter", public = list(
         theme(axis.ticks.x = element_blank(),
               axis.text.x = element_blank(),
               axis.title.x = element_blank(),
+              axis.text.y = element_text(angle = self$plot_context$y_text_angle, size = self$plot_context$y_text_size),
               legend.position = "none")
     }
-    g <- g + theme(axis.title.y = element_text(size = 18))
+    g <- g +
+      theme(axis.title.y = element_text(size = self$plot_context$y_title_size)) +
+      scale_y_continuous(labels = scales::number_format(accuracy = 0.01))
     return(g)
   },
   build_all_lbi_plots = function(data, thresholds) {
@@ -89,12 +98,14 @@ OutputPlotter <- R6Class("OutputPlotter", public = list(
     }
     return(plots)
   },
-  build_lbi_tower = function(title_size, title) {
+  build_lbi_tower = function() {
     plots <- private$build_all_lbi_plots(self$data, self$thresholds)
     tower <- ggarrange(plotlist = rev(plots),
                        ncol = 1,
                        nrow = length(self$thresholds))
-    tower_title <- private$build_grid_title(title, size = title_size)
+    tower_title <- private$build_grid_title(title = self$plot_context$main_title,
+                                            size = self$plot_context$main_title_size,
+                                            just = self$plot_context$main_title_just)
     return(ggarrange(
       plotlist = list(tower_title, tower),
       ncol = 1,
