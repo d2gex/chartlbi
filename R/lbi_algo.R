@@ -8,6 +8,7 @@ LbiAlgo <- R6Class("LbiAlgo", public = list(
   #'
   #' @param data length-frequency dataframe
   #' @param params R6 object with biological parameters and binwidth
+  #' @returns the dataframe of results as provided by the original code of LBI except for Lmaxy scores
   # @formatter:on
   initialize = function(data, params) {
     self$data <- data
@@ -27,7 +28,8 @@ LbiAlgo <- R6Class("LbiAlgo", public = list(
   # @formatter:on
   run = function() {
     results <- self$lbi()
-    output <- data.frame(
+    estimates <- data.frame(
+      years = results$Year,
       Lc_Lmat = results$Lc_Lmat,
       L25_Lmat = results$L25_Lmat,
       Lmax5_Linf = results$Lmax5_Linf,
@@ -35,10 +37,6 @@ LbiAlgo <- R6Class("LbiAlgo", public = list(
       Lmean_Lopt = results$Lmean_Lopt,
       Lmean_Lfem = results$Lmean_LFeM
     )
-
-    return(list(
-      years = results$Year,
-      estimates = output))
-
+    return(estimates)
   }
 ))
