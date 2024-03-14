@@ -62,14 +62,14 @@ bin_mat <- function(data, binwidth) {
 }
 
 #' Generate a matrix with the calculated LBI indicators so that they can be compared with thresholds.
-#' This is the untouched ICES function
+#' This is the untouched ICES function.
 #'
 #' @param data length-frequency matrix.
 #' @param binwidth A number indicating the width of each bin.
 #' @param linf A number indicating the asymptotic length.
 #' @param lmat A number indicating the first sexual maturity.
 #' @param weight weight-at-length matrix.
-#' @returns A numeric vector.
+#' @returns A dataframe with all calculated indicators.
 
 add <- function(x, y) {
   x + y
@@ -185,7 +185,7 @@ lb_ind_ices <- function(data,
     # length class with max yield
     if (!is.null(weight)) {
       final2$biomass <- final2$number * weight[, jj]
-      Ind[j, "Lmaxy"] <- final2[final2$biomass == max(final2$biomass), "lngth"]
+      Ind[j, "Lmaxy"] <- max(final2[final2$biomass == max(final2$biomass), "lngth"])
     } else {
       Ind[j, "Lmaxy"] <- NA
     }
@@ -225,7 +225,7 @@ lb_ind_ices <- function(data,
 #' @param binwidth A number indicating the width of each bin.
 #' @param linf A number indicating the asymptotic length.
 #' @param lmat A number indicating the first sexual maturity.
-#' @returns A numeric vector
+#' @returns A dataframe with all calculated indicators
 lb_ind_pretty <- function(data,
                           binwidth,
                           linf,
