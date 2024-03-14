@@ -1,3 +1,5 @@
+library("R6")
+
 freq_df_sample <- data.frame(
   meanlength = c(1, 2, 3, 4),
   X2021 = c(NA, 2, 3, 3),
@@ -33,3 +35,9 @@ multiple_freq_df_producer <- function (freq_df, num_times) {
   }
   return (freq_df_list)
 }
+
+AlgoParams <- R6Class("AlgoParams", public = list(
+  binwidth = NULL,
+  linf = NULL,
+  l50 = NULL
+))

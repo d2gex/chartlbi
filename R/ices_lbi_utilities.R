@@ -1,3 +1,4 @@
+library("reshape2")
 #' International Council for the Exploration of the Seas
 #'
 #' This is a modified version of the original "utilities.R" file that ICES used to implement lBI.
