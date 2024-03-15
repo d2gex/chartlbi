@@ -13,17 +13,81 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+# 1. Installing `prettylbi` package
+For this vigenette to work this package must be installed and exist in R's default libpath. The commented lines below need to be uncommented the first time you either run the whole document or this cell.
 
 ```{r setup}
 
 # installed_packages <- rownames(installed.packages())
 # if (!'prettylbi' %in% installed_packages) {
-#   devtools::install_github("https://github.com/d2gex/prettylbi")
+#   devtools::install_github("https://github.com/d2gex/prettylbi", dep=TRUE)
 # }
-
+# Ensure knitr does run the vignette from the same folder as interactively
+knitr::opts_knit$set(root.dir = dirname(getwd()))
 library("prettylbi")
 
 ```
+# 2. Working Directory
+This vigenette assumes that you are sitting on the root folder of your project. In otherwise situations please do use `setwd` as it suits you best.
+
+# 3. Reading the sample data
+ [Length-frequency](https://github.com/ices-tools-dev/LBI_shiny/blob/master/data/freqGad.csv) and [weight-at-length] (https://github.com/ices-tools-dev/LBI_shiny/blob/master/data/walGad.csv) matrices for gadoids in this example are provided by ICES.
 ```{r}
-.libPaths()
+length_freq_matrix <- readRDS("vignettes/data/freq_gad.rds")
+wal_matrix <- readRDS("vignettes/data/wal_gad.rds")
+
+
+```
+```{r}
+# head(length_freq_matrix)
+```
+```{r}
+# head(wal_matrix)
+```
+```{r}
+
+
+
+
+
+AlgoParams <- R6::R6Class("AlgoParams", public = list(
+  binwidth = NULL,
+  linf = NULL,
+  l50 = NULL
+))
+
+PlotContext <- R6::R6Class("PlotContext", public = list(
+  main_title_size = 15,
+  main_title = "LBI Scores",
+  threshold_line_width = 1.2,
+  x_title_size = 18,
+  x_text_size = 12,
+  x_text_angle = 90,
+  y_title_size = 18,
+  y_text_size = 12,
+  y_text_angle = 0
+))
+
+params <- AlgoParams$new()
+params$binwidth <- 10
+params$linf <- 50
+params$l50 <- 103
+
+thresholds <- list(
+  Lc_Lmat = 1,
+  L25_Lmat = 1,
+  Lmax5_Linf = 0.8,
+  Pmega = 0.3,
+  Lmean_Lopt = 0.9,
+  Lmean_Lfem = 1)
+
+lbi <- LbiAlgo$new(length_freq_matrix, params)
+results <- lbi$run()
+stack_plot_context <- PlotContext$new()
+lbi_plotter <- OutputPlotter$new(results, stack_plot_context, thresholds)
+graph <- lbi_plotter$build_plots()
+graph
+```
+```{r}
+
 ```
