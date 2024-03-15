@@ -7,8 +7,6 @@
 #' @source  https://raw.githubusercontent.com/ices-tools-dev/LBI_shiny/master/utilities.R
 'ices_lbi_utilities.R'
 
-library("reshape2")
-
 bin_mat <- function(data, binwidth) {
   # First column is the current length class
   # Remaining columns are years
@@ -73,10 +71,6 @@ bin_mat <- function(data, binwidth) {
 #' @param weight weight-at-length matrix.
 #' @returns A dataframe with all calculated indicators.
 
-add <- function(x, y) {
-  x + y
-}
-
 lb_ind_ices <- function(data,
                         binwidth,
                         linf,
@@ -108,10 +102,10 @@ lb_ind_ices <- function(data,
   Ind$Year <- startyear:endyear
 
   #  regrouping with selected length class width
-  longDat <- melt(newDat[, -1],
-                  id.var = "lmidp",
-                  value.name = "number",
-                  variable.name = "year")
+  longDat <- reshape2::melt(newDat[, -1],
+                            id.var = "lmidp",
+                            value.name = "number",
+                            variable.name = "year")
   longDat$year <- as.numeric(gsub("X", "", as.character(longDat$year)))
 
   Year <- seq(startyear, endyear)
@@ -252,10 +246,10 @@ lb_ind_pretty <- function(data,
   Ind$Year <- startyear:endyear
 
   #  regrouping with selected length class width
-  longDat <- melt(newDat[, -1],
-                  id.var = "lmidp",
-                  value.name = "number",
-                  variable.name = "year")
+  longDat <- reshape2::melt(newDat[, -1],
+                            id.var = "lmidp",
+                            value.name = "number",
+                            variable.name = "year")
   longDat$year <- as.numeric(gsub("X", "", as.character(longDat$year)))
 
   Year <- seq(startyear, endyear)

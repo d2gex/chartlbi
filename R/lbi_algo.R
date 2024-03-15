@@ -1,6 +1,4 @@
-library("R6")
-
-LbiAlgo <- R6Class("LbiAlgo", public = list(
+LbiAlgo <- R6::R6Class("LbiAlgo", public = list(
   data = NULL,
   params = NULL,
   # @formatter:off

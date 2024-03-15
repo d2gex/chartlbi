@@ -11,7 +11,16 @@ Maintainer: Dan G <dgarcia@iim.csic.es>
 Description: Improve existing LBI implementation by removing obsolete dependencies, fixing bugs and providing
     an alternative way of visualising the results.
 License: MIT License
-Suggests: 
+Depends:
+    R (>= 4.2.2)
+Imports:
+    reshape2,
+    R6,
+    scales,
+    stringr,
+    ggpubr,
+    ggplot2
+Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)

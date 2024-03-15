@@ -1,5 +1,3 @@
-library("R6")
-
 freq_df_sample <- data.frame(
   meanlength = c(1, 2, 3, 4),
   X2021 = c(NA, 2, 3, 3),
@@ -16,7 +14,7 @@ wal_df_sample <- data.frame(
   X2024 = c(4.5, 5.1, 6.9, 12)
 )
 
-multiple_freq_df_producer <- function (freq_df, num_times) {
+multiple_freq_df_producer <- function(freq_df, num_times) {
 
   freq_df_list <- list()
   for (i in 1:num_times) {
@@ -25,7 +23,7 @@ multiple_freq_df_producer <- function (freq_df, num_times) {
     values <- sample(1:100, 4)
     if (col_or_row == 1) {
       position <- sample(2:length(df), 1)
-      df[,position] <- values
+      df[, position] <- values
     }
     else {
       position <- sample(1:nrow(df), 1)
@@ -33,10 +31,10 @@ multiple_freq_df_producer <- function (freq_df, num_times) {
     }
     freq_df_list[[i]] <- df
   }
-  return (freq_df_list)
+  return(freq_df_list)
 }
 
-AlgoParams <- R6Class("AlgoParams", public = list(
+AlgoParams <- R6::R6Class("AlgoParams", public = list(
   binwidth = NULL,
   linf = NULL,
   l50 = NULL

@@ -1,9 +1,4 @@
-library("R6")
-library("ggplot2")
-library("ggpubr")
-library("stringr")
-
-OutputPlotter <- R6Class("OutputPlotter", public = list(
+OutputPlotter <- R6::R6Class("OutputPlotter", public = list(
 
   data = NULL,
   plot_context = NULL,
@@ -19,10 +14,10 @@ OutputPlotter <- R6Class("OutputPlotter", public = list(
 ), private = list(
 
   build_grid_title = function(title, size = 15, just = "centre") {
-    tgrob <- text_grob(title, size = size, just = just)
-    return(ggarrange(plotlist = list(as_ggplot(tgrob)),
-                     ncol = 1,
-                     nrow = 1))
+    tgrob <- ggpubr::text_grob(title, size = size, just = just)
+    return(ggpubr::ggarrange(plotlist = list(ggpubr::as_ggplot(tgrob)),
+                             ncol = 1,
+                             nrow = 1))
   },
 
   # @formatter:off
@@ -42,38 +37,38 @@ OutputPlotter <- R6Class("OutputPlotter", public = list(
 
   },
   build_single_lbi_row_plot = function(data, colname, threshold, is_bottom) {
-    g <- ggplot(data, aes(x = factor(years), y = .data[[colname]])) +
-      geom_line(aes(group = 1)) +
-      geom_point(aes(colour = fitness)) +
-      geom_hline(yintercept = threshold,
-                 linetype = 'dotted',
-                 col = 'green',
-                 linewidth = self$plot_context$threshold_line_width) +
-      scale_color_manual(values = c(yes = "limegreen", no = 'red4')) +
-      theme_bw() +
-      xlab('Years') +
-      ylab(private$make_lbi_y_axis_prettier(colname))
+    g <- ggplot2::ggplot(data, ggplot2::aes(x = factor(years), y = .data[[colname]])) +
+      ggplot2::geom_line(ggplot2::aes(group = 1)) +
+      ggplot2::geom_point(ggplot2::aes(colour = fitness)) +
+      ggplot2::geom_hline(yintercept = threshold,
+                          linetype = 'dotted',
+                          col = 'green',
+                          linewidth = self$plot_context$threshold_line_width) +
+      ggplot2::scale_color_manual(values = c(yes = "limegreen", no = 'red4')) +
+      ggplot2::theme_bw() +
+      ggplot2::xlab('Years') +
+      ggplot2::ylab(private$make_lbi_y_axis_prettier(colname))
 
     if (is_bottom) {
       g <- g +
-        theme(
-          axis.text.x = element_text(angle = self$plot_context$x_text_angle, size = self$plot_context$x_text_size),
-          axis.text.y = element_text(angle = self$plot_context$y_text_angle, size = self$plot_context$y_text_size),
-          axis.title.x = element_text(size = self$plot_context$x_title_size),
+        ggplot2::theme(
+          axis.text.x = ggplot2::element_text(angle = self$plot_context$x_text_angle, size = self$plot_context$x_text_size),
+          axis.text.y = ggplot2::element_text(angle = self$plot_context$y_text_angle, size = self$plot_context$y_text_size),
+          axis.title.x = ggplot2::element_text(size = self$plot_context$x_title_size),
           legend.position = "none"
         )
     }
     else {
       g <- g +
-        theme(axis.ticks.x = element_blank(),
-              axis.text.x = element_blank(),
-              axis.title.x = element_blank(),
-              axis.text.y = element_text(angle = self$plot_context$y_text_angle, size = self$plot_context$y_text_size),
-              legend.position = "none")
+        ggplot2::theme(axis.ticks.x = ggplot2::element_blank(),
+                       axis.text.x = ggplot2::element_blank(),
+                       axis.title.x = ggplot2::element_blank(),
+                       axis.text.y = ggplot2::element_text(angle = self$plot_context$y_text_angle, size = self$plot_context$y_text_size),
+                       legend.position = "none")
     }
     g <- g +
-      theme(axis.title.y = element_text(size = self$plot_context$y_title_size)) +
-      scale_y_continuous(labels = scales::number_format(accuracy = 0.01))
+      ggplot2::theme(axis.title.y = ggplot2::element_text(size = self$plot_context$y_title_size)) +
+      ggplot2::scale_y_continuous(labels = scales::number_format(accuracy = 0.01))
     return(g)
   },
   build_all_lbi_plots = function(data, thresholds) {
@@ -85,7 +80,7 @@ OutputPlotter <- R6Class("OutputPlotter", public = list(
       col_threshold <- thresholds[[c_name]]
       col_data <- data.frame(years = data$years)
       col_data[[c_name]] <- data[[c_name]]
-      if (str_detect(c_name, 'Lfem')) {
+      if (stringr::str_detect(c_name, 'Lfem')) {
         col_data$fitness <- ifelse(col_data[[c_name]] >= col_threshold, 'yes', 'no')
       }
       else {
@@ -100,13 +95,13 @@ OutputPlotter <- R6Class("OutputPlotter", public = list(
   },
   build_lbi_tower = function() {
     plots <- private$build_all_lbi_plots(self$data, self$thresholds)
-    tower <- ggarrange(plotlist = rev(plots),
-                       ncol = 1,
-                       nrow = length(self$thresholds))
+    tower <- ggpubr::ggarrange(plotlist = rev(plots),
+                                ncol = 1,
+                                nrow = length(self$thresholds))
     tower_title <- private$build_grid_title(title = self$plot_context$main_title,
                                             size = self$plot_context$main_title_size,
                                             just = self$plot_context$main_title_just)
-    return(ggarrange(
+    return(ggpubr::ggarrange(
       plotlist = list(tower_title, tower),
       ncol = 1,
       nrow = 2,
