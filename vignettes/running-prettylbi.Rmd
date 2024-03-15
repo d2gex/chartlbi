@@ -1,0 +1,25 @@
+---
+title: "running-prettylbi"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{running-prettylbi}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+installed_packages <- rownames(installed.packages())
+if (!'prettylbi' %in% installed_packages) {
+  devtools::install_github("https://github.com/d2gex/prettylbi")
+}
+library("prettylbi")
+
+```
+

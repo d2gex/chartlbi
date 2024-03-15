@@ -12,6 +12,9 @@ Description: Improve existing LBI implementation by removing obsolete dependenci
     an alternative way of visualising the results.
 License: MIT License
 Suggests: 
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 LazyData: true
+VignetteBuilder: knitr
