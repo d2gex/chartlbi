@@ -1,18 +1,44 @@
+#'Class plotting LBI results
+#'
+#' @description
+#' Results are plotted as a tower of plots, one on top of another
+
 OutputPlotter <- R6::R6Class("OutputPlotter", public = list(
 
   data = NULL,
   plot_context = NULL,
   thresholds = NULL,
+    # @formatter:off
+  #'@description
+  #' Initialise the OutputPlotter class
+  #'
+  #' @param data a dataframe with the LBI indicators
+  #' @param plot_context A R6 object or named List with parameteres that allow customising certain aspects of the plot
+  #' @param thresholds A name list with the thresholds against which the LBI indicators will be copmared
+  #' @export
+  # @formatter:on
   initialize = function(data, plot_context, thresholds) {
     self$data <- data
     self$plot_context <- plot_context
     self$thresholds <- thresholds
   },
-  generate_outputs = function() {
+
+  # @formatter:off
+  #'@description
+  #' Build a tower of plots
+  #'
+  #' @returns a ggplot class
+  # @formatter:on
+  build_plots = function() {
     return(private$build_lbi_tower())
   }
 ), private = list(
 
+  # @formatter:off
+  #' @description
+  #'
+  #' Build the title for a whole grid
+  # @formatter:on
   build_grid_title = function(title, size = 15, just = "centre") {
     tgrob <- ggpubr::text_grob(title, size = size, just = just)
     return(ggpubr::ggarrange(plotlist = list(ggpubr::as_ggplot(tgrob)),
@@ -21,6 +47,7 @@ OutputPlotter <- R6::R6Class("OutputPlotter", public = list(
   },
 
   # @formatter:off
+  #' @description
   #' Make Y axis of each single plot prettier
   #'
   #' @param name a string identifying the name of the y-axis to change
@@ -36,6 +63,15 @@ OutputPlotter <- R6::R6Class("OutputPlotter", public = list(
                   'Pmega' = bquote(P[mega])))
 
   },
+
+  #' @description
+  #' Build a plot representing a single LBI indicator
+  #'
+  #' @details
+  #' A plot is generated for each single indicator. The indicator a the bottom of the stack will provide
+  #' the common ticks (years) and xlabel (Year label).
+  #'
+  #' @returns a ggplot class
   build_single_lbi_row_plot = function(data, colname, threshold, is_bottom) {
     g <- ggplot2::ggplot(data, ggplot2::aes(x = factor(years), y = .data[[colname]])) +
       ggplot2::geom_line(ggplot2::aes(group = 1)) +
@@ -71,6 +107,11 @@ OutputPlotter <- R6::R6Class("OutputPlotter", public = list(
       ggplot2::scale_y_continuous(labels = scales::number_format(accuracy = 0.01))
     return(g)
   },
+
+  #' @description
+  #' Build every plot for every indicator
+  #'
+  #' @returns A list of all built plots
   build_all_lbi_plots = function(data, thresholds) {
     col_names <- names(data)
     col_names <- col_names[col_names != 'years']
@@ -93,6 +134,11 @@ OutputPlotter <- R6::R6Class("OutputPlotter", public = list(
     }
     return(plots)
   },
+
+  #' @description
+  #' Mount a tower of plots (one on top of another)
+  #'
+  #' @returns A tower with all plots aligned
   build_lbi_tower = function() {
     plots <- private$build_all_lbi_plots(self$data, self$thresholds)
     tower <- ggpubr::ggarrange(plotlist = rev(plots),

@@ -1,12 +1,3 @@
-#' International Council for the Exploration of the Seas
-#'
-#' This is a modified version of the original "utilities.R" file that ICES used to implement lBI.
-#' The modifications remove all functions that concerns plotting and fix the bug whereby two length classes could have
-#' the same biomass.
-#'
-#' @source  https://raw.githubusercontent.com/ices-tools-dev/LBI_shiny/master/utilities.R
-'ices_lbi_utilities.R'
-
 bin_mat <- function(data, binwidth) {
   # First column is the current length class
   # Remaining columns are years
@@ -61,6 +52,8 @@ bin_mat <- function(data, binwidth) {
   return(dWide)
 }
 
+#' Calculate the wanted LBI indicators
+#'
 #' Generate a matrix with the calculated LBI indicators so that they can be compared with thresholds.
 #' This is the untouched ICES function.
 #'
@@ -70,7 +63,8 @@ bin_mat <- function(data, binwidth) {
 #' @param lmat A number indicating the first sexual maturity.
 #' @param weight weight-at-length matrix.
 #' @returns A dataframe with all calculated indicators.
-
+#' @source  https://raw.githubusercontent.com/ices-tools-dev/LBI_shiny/master/utilities.R
+#' @export
 lb_ind_ices <- function(data,
                         binwidth,
                         linf,
@@ -208,20 +202,23 @@ lb_ind_ices <- function(data,
   return(Ind)
 }
 
+#' Calculate the wanted LBI indicators
+#'
 #' Generate a matrix with the calculated LBI indicators so that they can be compared with thresholds.
-#' This is the modified version of 'lb_ind_ices' and does not allow to use the weight-at-length matrix which is
-#' only used to calculate the 'Optimal Yield' as the maximum length that holds the largest biomass. The reason
-#' being is that there are two bugs as follows: a) how the multiplication of the frequency by the weight-at-length matrices
-#' are performed where not the same year columns are picked and multiplied in the two matrices and b) how multiple
-#' length classes that may have the same biomass are dealt with. Given these bugs and the fact that this
-#' indicator - Lmaxy/Lopt- isn't isued in the the traffic-light visualisation -lb_table-, this indicator is no longer
-#' calculated in this version of the function.
+#' This is the modified version of 'lb_ind_ices' and does not allow to use the weight-at-length matrix needed only
+#' to calculate the 'Optimal Yield' as the maximum length that holds the largest biomass. The reason
+#' being is that there are two bugs as follows: a) the multiplication of the frequency by the weight-at-length matrices
+#' is performed in such a way that not the same year columns are picked and multiplied in the two matrices - columns
+#' are shifted - and b) multiple length classes may have the same biomass yielding a returned dimension error.
+#' Given these bugs and the fact that the affected indicator - Lmaxy/Lopt- isn't ued in the the traffic-light
+#' visualisation form -lb_table-, this indicator is no longer calculated in this version of the function.
 #'
 #' @param data length-frequency matrix.
 #' @param binwidth A number indicating the width of each bin.
 #' @param linf A number indicating the asymptotic length.
 #' @param lmat A number indicating the first sexual maturity.
 #' @returns A dataframe with all calculated indicators
+#' @export
 lb_ind_pretty <- function(data,
                           binwidth,
                           linf,
