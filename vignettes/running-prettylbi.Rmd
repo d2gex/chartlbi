@@ -15,11 +15,15 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-installed_packages <- rownames(installed.packages())
-if (!'prettylbi' %in% installed_packages) {
-  devtools::install_github("https://github.com/d2gex/prettylbi")
-}
+
+# installed_packages <- rownames(installed.packages())
+# if (!'prettylbi' %in% installed_packages) {
+#   devtools::install_github("https://github.com/d2gex/prettylbi")
+# }
+
 library("prettylbi")
 
 ```
-
+```{r}
+.libPaths()
+```
