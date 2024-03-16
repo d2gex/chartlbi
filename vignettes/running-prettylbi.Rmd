@@ -39,55 +39,32 @@ wal_matrix <- readRDS("vignettes/data/wal_gad.rds")
 
 ```
 ```{r}
-# head(length_freq_matrix)
+head(length_freq_matrix)
 ```
 ```{r}
-# head(wal_matrix)
+ head(wal_matrix)
 ```
 ```{r}
 
-
-
-
-
-AlgoParams <- R6::R6Class("AlgoParams", public = list(
-  binwidth = NULL,
-  linf = NULL,
-  l50 = NULL
-))
-
-PlotContext <- R6::R6Class("PlotContext", public = list(
-  main_title_size = 15,
-  main_title = "LBI Scores",
-  threshold_line_width = 1.2,
-  x_title_size = 18,
-  x_text_size = 12,
-  x_text_angle = 90,
-  y_title_size = 18,
-  y_text_size = 12,
-  y_text_angle = 0
-))
-
+# (1) Define biological inputs and size of class length
 params <- AlgoParams$new()
 params$binwidth <- 10
 params$linf <- 50
 params$l50 <- 103
 
-thresholds <- list(
-  Lc_Lmat = 1,
-  L25_Lmat = 1,
-  Lmax5_Linf = 0.8,
-  Pmega = 0.3,
-  Lmean_Lopt = 0.9,
-  Lmean_Lfem = 1)
+# (2) Define the context used to graph the results. Default values provided at
+# instantiation time.
+stack_plot_context <- PlotContext$new()
 
+# (3) Define the threshold over which the LBI indicators will be evaluated. Default values provided at instantiation time.
+thresholds <- Thresholds$new()
+
+# (4) Run the LBI algorithm
 lbi <- LbiAlgo$new(length_freq_matrix, params)
 results <- lbi$run()
-stack_plot_context <- PlotContext$new()
+
+# (5) Plot the results
 lbi_plotter <- OutputPlotter$new(results, stack_plot_context, thresholds)
 graph <- lbi_plotter$build_plots()
 graph
-```
-```{r}
-
 ```
