@@ -1,4 +1,4 @@
-Package: prettylbi
+Package: chartlbi
 Type: Package
 Title: Enhance existing LBI data-poor method provided by ICES at https://raw.githubusercontent.com/ices-tools-dev/LBI_shiny/master/utilities.R
 Version: 1.0

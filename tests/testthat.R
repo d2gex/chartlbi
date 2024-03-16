@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(prettylbi)
+library(chartlbi)
 
-test_check("prettylbi")
+test_check("chartlbi")
