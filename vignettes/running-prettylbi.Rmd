@@ -56,12 +56,15 @@ stack_plot_context <- PlotContext$new()
 # (3) Define the threshold over which the LBI indicators will be evaluated. Default values provided at instantiation time.
 thresholds <- Thresholds$new()
 
+# (5) Define indicator order you want them to be shown as
+column_order <- list('Pmega','Lc_Lmat', 'L25_Lmat', 'Lmax5_Linf', 'Lmean_Lopt', 'Lmean_Lfem')
+
 # (4) Run the LBI algorithm
 lbi <- LbiAlgo$new(length_freq_matrix, params)
 results <- lbi$run()
 
 # (5) Plot the results
 lbi_plotter <- OutputPlotter$new(results, stack_plot_context, thresholds)
-graph <- lbi_plotter$build_plots()
+graph <- lbi_plotter$build_plots(column_order)
 graph
 ```
