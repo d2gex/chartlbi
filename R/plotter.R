@@ -149,7 +149,8 @@ OutputPlotter <- R6::R6Class("OutputPlotter", public = list(
     plots <- private$build_all_lbi_plots(self$data, self$thresholds, colum_order)
     tower <- ggpubr::ggarrange(plotlist = rev(plots),
                                ncol = 1,
-                               nrow = length(self$thresholds))
+                               nrow = length(self$thresholds),
+                               heights = c(1, 1, 1, 1, 1, 1.3))
     tower_title <- private$build_grid_title(title = self$plot_context$main_title,
                                             size = self$plot_context$main_title_size,
                                             just = self$plot_context$main_title_just)
