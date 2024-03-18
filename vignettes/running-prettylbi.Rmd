@@ -33,24 +33,21 @@ This vigenette assumes that you are sitting on the root folder of your project. 
 # 3. Reading the sample data
  [Length-frequency](https://github.com/ices-tools-dev/LBI_shiny/blob/master/data/freqGad.csv) and [weight-at-length] (https://github.com/ices-tools-dev/LBI_shiny/blob/master/data/walGad.csv) matrices for gadoids in this example are provided by ICES.
 ```{r}
-length_freq_matrix <- readRDS("vignettes/data/freq_gad.rds")
-wal_matrix <- readRDS("vignettes/data/wal_gad.rds")
+length_freq_matrix <- readRDS("vignettes/data/demersal_fish_sample.rds")
 
 
 ```
 ```{r}
 head(length_freq_matrix)
 ```
-```{r}
- head(wal_matrix)
-```
-```{r}
+
+```{r fig.width=8, fig.height=15}
 
 # (1) Define biological inputs and size of class length
 params <- AlgoParams$new()
 params$binwidth <- 10
-params$linf <- 50
-params$l50 <- 103
+params$linf <- 49.1
+params$l50 <- 23
 
 # (2) Define the context used to graph the results. Default values provided at
 # instantiation time.
