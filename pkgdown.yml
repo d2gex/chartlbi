@@ -3,7 +3,7 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   running-prettylbi: running-prettylbi.html
-last_built: 2024-03-18T09:22Z
+last_built: 2024-03-18T12:45Z
 urls:
   reference: https://d2gex.github.io/chartlbi/reference
   article: https://d2gex.github.io/chartlbi/articles

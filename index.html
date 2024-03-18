@@ -58,10 +58,38 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="iim_lbi">iim_lbi<a class="anchor" aria-label="anchor" href="#iim_lbi"></a>
+  <main id="main" class="col-md-9">
+<div class="section level1">
+<div class="page-header"><h1 id="chartlbi">chartlbi<a class="anchor" aria-label="anchor" href="#chartlbi"></a>
 </h1></div>
+<p>chartlbi is a project built around the utilities for the Length Based Indicator (LBI) algorithm developed by <a href="https://github.com/ices-tools-dev/LBI_shiny/blob/master/utilities.R" class="external-link">ICES</a> and provides an alternative visualisation of the LBI indicators to the old traffic light system. As a consequence most of the obsolete libraries the original source code was relying on such <a href="https://github.com/davidgohel/ReporteRs" class="external-link">ReportRs</a> have now vanished. In addition, neither JAVA nor Java dependencies such <a href="https://github.com/davidgohel/ReporteRsjars" class="external-link">ReporteRsjars</a> are any longer required, therefore easing its installation.</p>
+<div class="section level2">
+<h2 id="lbi-visualisation">LBI Visualisation<a class="anchor" aria-label="anchor" href="#lbi-visualisation"></a>
+</h2>
+<p>The primary goal of this wrapper is to make the LBI visual outputs more modern-like, visually-appealing and hopefully more intuitive, facilitating its integration with other similar length-based methods applied as part of everyone’s data analysis. Each indicator is now plotted by using <code>ggplot2</code> and stacked up one on top of another, where every individual indicator value per timestep is visually compared against their theoretical thresholds. Any value equal or above the threshold will be plotted in <span style="color: green;">green</span> and below in <span style="color: red;">red</span>.</p>
 </div>
+<div class="section level2">
+<h2 id="awareness-of-old-bugs">Awareness of old bugs<a class="anchor" aria-label="anchor" href="#awareness-of-old-bugs"></a>
+</h2>
+<p>chartlbi has cut from the source code the capacity of showing the <strong>Optimal Yield</strong> indicator as a function of <code>Lmaxy</code>, that is, the length class from the length-frequency matrix that holds the largest biomass per timestep. The reason being is that there are two bugs in the original source code as follows:</p>
+<ol>
+<li>
+The old algorithm does not contemplate that two length-classes may hold the same biomass. Such case is possible when the mean weight for a single year and length class is calculated as the average weight of all individuals within, rather than using the formula <span class="math inline"><em>W</em> = <em>a</em> * <em>L</em><sup><em>b</em></sup></span>.(See <a href="https://github.com/ices-tools-dev/LBI_shiny/blob/8a8e7706232d68e5ccab9207ae9c273c83b778b6/utilities.R#L185" class="external-link">bug source code</a>).
+</li>
+<li>
+Even when there is only one single length-class per maximum biomass and timestep, the calculation of <code>Lmaxy</code> is performed by multiplying the columns of the length-frequency and weight-at-length in desynchronised mode. There is a mismatch for every pair of columns. (See <a href="https://github.com/ices-tools-dev/LBI_shiny/blob/8a8e7706232d68e5ccab9207ae9c273c83b778b6/utilities.R#L184" class="external-link">bug source code</a>)
+</li>
+</ol>
+</div>
+</div>
+<div class="section level1">
+<h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h1>
+<p>This R package can be installed through the devtools as follows:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span>  <span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"https://github.com/d2gex/chartlbi"</span>, dep<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+</div>
+
   </main><aside class="col-md-3"><div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
@@ -85,7 +113,12 @@
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://d2gex.github.io/chartlbi/"><img src="https://img.shields.io/badge/documentation-chartbli-orange.svg?colorB=E91E63" alt="Documentation"></a></li>
+</ul>
+</div>
 
   </aside>
 </div>
