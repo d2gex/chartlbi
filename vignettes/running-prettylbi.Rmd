@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 # 1. Installing `chartlbi` package
-For this vigenette to work this package must be installed and exist in R's default libpath. The commented lines below need to be uncommented the first time you either run the whole document or this cell.
+For this vigenette to work this package must be installed and exist in R's default libpath. The commented lines below need to be uncommented the first time you either run the whole document or this cell. This vigenette assumes that you are sitting on the root folder of your project. Otherwise please do use `setwd` as it suits you best.
 
 ```{r setup}
 
@@ -27,20 +27,22 @@ knitr::opts_knit$set(root.dir = dirname(getwd()))
 library("chartlbi")
 
 ```
-# 2. Working Directory
-This vigenette assumes that you are sitting on the root folder of your project. In otherwise situations please do use `setwd` as it suits you best.
 
-# 3. Reading the sample data
- [Length-frequency](https://github.com/ices-tools-dev/LBI_shiny/blob/master/data/freqGad.csv) and [weight-at-length] (https://github.com/ices-tools-dev/LBI_shiny/blob/master/data/walGad.csv) matrices for gadoids in this example are provided by ICES.
+# 2. Reading the sample data
+A data sample of a demersal species from the northern waters of the Iberian peninsula has been provided. Although the data has been made up, the details should
+be pretty realistic. The timeseries stretches from 2004 to 2016. A sample of the matrix is plotted below.
 ```{r}
 length_freq_matrix <- readRDS("vignettes/data/demersal_fish_sample.rds")
-
-
-```
-```{r}
 head(length_freq_matrix)
 ```
 
+# 3. Running chartlbi
+Running `chartlbi` is pretty simple. It only requires 4 parameters:
+
+1. Data results from the LBI algorithm
+2. A context shaping the visualisation of the results. You may not need to change the default values to start with.
+3. The thresholds against which the results will be evaluated. Default values have been provided, and you will hardly ever need to modify this.
+4. The order you would like the indicator to appear following a bottom-top approach.
 ```{r fig.width=8, fig.height=15}
 
 # (1) Define biological inputs and size of class length
