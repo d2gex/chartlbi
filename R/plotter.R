@@ -8,7 +8,7 @@ OutputPlotter <- R6::R6Class("OutputPlotter", public = list(
   data = NULL,
   plot_context = NULL,
   thresholds = NULL,
-    # @formatter:off
+  # @formatter:off
   #'@description
   #' Initialise the OutputPlotter class
   #'
@@ -27,10 +27,11 @@ OutputPlotter <- R6::R6Class("OutputPlotter", public = list(
   #'@description
   #' Build a tower of plots
   #'
+  #' @param colum_order ordered list which the LBI indicators will appear in
   #' @returns a ggplot class
   # @formatter:on
-  build_plots = function() {
-    return(private$build_lbi_tower())
+  build_plots = function(colum_order) {
+    return(private$build_lbi_tower(colum_order))
   }
 ), private = list(
 
@@ -64,6 +65,7 @@ OutputPlotter <- R6::R6Class("OutputPlotter", public = list(
 
   },
 
+  # @formatter:off
   #' @description
   #' Build a plot representing a single LBI indicator
   #'
@@ -72,6 +74,7 @@ OutputPlotter <- R6::R6Class("OutputPlotter", public = list(
   #' the common ticks (years) and xlabel (Year label).
   #'
   #' @returns a ggplot class
+  # @formatter:on
   build_single_lbi_row_plot = function(data, colname, threshold, is_bottom) {
     g <- ggplot2::ggplot(data, ggplot2::aes(x = factor(years), y = .data[[colname]])) +
       ggplot2::geom_line(ggplot2::aes(group = 1)) +
@@ -108,16 +111,16 @@ OutputPlotter <- R6::R6Class("OutputPlotter", public = list(
     return(g)
   },
 
+  # @formatter:off
   #' @description
   #' Build every plot for every indicator
   #'
   #' @returns A list of all built plots
-  build_all_lbi_plots = function(data, thresholds) {
-    col_names <- names(data)
-    col_names <- col_names[col_names != 'years']
+  # @formatter:on
+  build_all_lbi_plots = function(data, thresholds, column_order) {
     plots <- list()
-    for (i in seq_along(col_names)) {
-      c_name <- col_names[[i]]
+    for (i in seq_along(column_order)) {
+      c_name <- column_order[[i]]
       col_threshold <- thresholds[[c_name]]
       col_data <- data.frame(years = data$years)
       col_data[[c_name]] <- data[[c_name]]
@@ -135,15 +138,18 @@ OutputPlotter <- R6::R6Class("OutputPlotter", public = list(
     return(plots)
   },
 
+  # @formatter:off
   #' @description
   #' Mount a tower of plots (one on top of another)
   #'
+  #' @param colum_order ordered list which the LBI indicators will appear in
   #' @returns A tower with all plots aligned
-  build_lbi_tower = function() {
-    plots <- private$build_all_lbi_plots(self$data, self$thresholds)
+  # @formatter:on
+  build_lbi_tower = function(colum_order) {
+    plots <- private$build_all_lbi_plots(self$data, self$thresholds, colum_order)
     tower <- ggpubr::ggarrange(plotlist = rev(plots),
-                                ncol = 1,
-                                nrow = length(self$thresholds))
+                               ncol = 1,
+                               nrow = length(self$thresholds))
     tower_title <- private$build_grid_title(title = self$plot_context$main_title,
                                             size = self$plot_context$main_title_size,
                                             just = self$plot_context$main_title_just)
