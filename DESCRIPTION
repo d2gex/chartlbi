@@ -1,6 +1,6 @@
 Package: chartlbi
 Type: Package
-Title: Enhance existing LBI data-poor method provided by ICES at https://raw.githubusercontent.com/ices-tools-dev/LBI_shiny/master/utilities.R
+Title: Chart LBI Visualisation
 Version: 1.0
 Date: 2024-03-11
 Authors@R: person(given = "Dan",
@@ -8,8 +8,7 @@ Authors@R: person(given = "Dan",
              role = c("aut", "cre"),
              email = "dgarcia@iim.csic.es")
 Maintainer: Dan G <dgarcia@iim.csic.es>
-Description: Improve existing LBI implementation by removing obsolete dependencies, fixing bugs and providing
-    an alternative way of visualising the results.
+Description: An alternative chart visualisation to the old traffic light system for the Length Based Indicators (LBI) algorithm.
 License: MIT License
 Depends:
     R (>= 4.2.2)
