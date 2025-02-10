@@ -2,9 +2,9 @@
 title: "running-chartlbi"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{running-chartlbi}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+    %\VignetteIndexEntry{running-chartlbi}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
@@ -14,25 +14,18 @@ knitr::opts_chunk$set(
 )
 ```
 # 1. Installing `chartlbi` package
-For this vigenette to work this package must be installed and exist in R's default libpath. The commented lines below need to be uncommented the first time you either run the whole document or this cell. This vigenette assumes that you are sitting on the root folder of your project. Otherwise please do use `setwd` as it suits you best.
+For this vigenette to work `chartlbi` must be installed and exist in R's default libpath.
 
 ```{r setup}
-
-# installed_packages <- rownames(installed.packages())
-# if (!'chartlbi' %in% installed_packages) {
-#   devtools::install_github("https://github.com/d2gex/chartlbi", dep=TRUE)
-# }
-# Ensure knitr does run the vignette from the same folder as interactively
-knitr::opts_knit$set(root.dir = dirname(getwd()))
-library("chartlbi")
+# devtools::install_github("d2gex/chartlbi")
 
 ```
 
 # 2. Reading the sample data
 A data sample of a demersal species from the northern waters of the Iberian peninsula has been provided. Although the data has been made up, the details should
-be pretty realistic. The timeseries stretches from 2004 to 2016. A sample of the matrix is plotted below.
-```{r}
-length_freq_matrix <- readRDS("vignettes/data/demersal_fish_sample.rds")
+be pretty realistic. The timeseries stretches from 2004 to 2016. A sample of the matrix is showed below.
+```{r sample_data_reading}
+length_freq_matrix <- readRDS("data/demersal_fish_sample.rds")
 head(length_freq_matrix)
 ```
 
@@ -46,27 +39,29 @@ Running `chartlbi` is pretty simple. It only requires 4 parameters:
 ```{r fig.width=8, fig.height=15}
 
 # (1) Define biological inputs and size of class length
-params <- AlgoParams$new()
-params$binwidth <- 10
-params$linf <- 49.1
-params$l50 <- 23
+params <- list(
+  binwidth = 1,
+  linf = 49.1,
+  l50 = 23
+)
 
-# (2) Define the context used to graph the results. Default values provided at
-# instantiation time.
-stack_plot_context <- PlotContext$new()
+
+# (2) Define the context used to graph the results. Default values provided at instantiation time. However
+# you can modify them as suits you best as PlotContext$new returns a R6 object
+stack_plot_context <- chartlbi::PlotContext$new()
 
 # (3) Define the threshold over which the LBI indicators will be evaluated. Default values provided at instantiation time.
-thresholds <- Thresholds$new()
+thresholds <- chartlbi::Thresholds
 
 # (5) Define indicator order you want them to be shown as
-column_order <- list('Pmega','Lc_Lmat', 'L25_Lmat', 'Lmax5_Linf', 'Lmean_Lopt', 'Lmean_Lfem')
+column_order <- list('Pmega', 'Lc_Lmat', 'L25_Lmat', 'Lmax5_Linf', 'Lmean_Lopt', 'Lmean_Lfem')
 
 # (4) Run the LBI algorithm
-lbi <- LbiAlgo$new(length_freq_matrix, params)
+lbi <- chartlbi::LbiAlgo$new(length_freq_matrix, params)
 results <- lbi$run()
 
 # (5) Plot the results
-lbi_plotter <- OutputPlotter$new(results, stack_plot_context, thresholds)
+lbi_plotter <- chartlbi::OutputPlotter$new(results, stack_plot_context, thresholds)
 graph <- lbi_plotter$build_plots(column_order)
 graph
 ```
