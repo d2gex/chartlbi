@@ -50,9 +50,16 @@ Initialise the OutputPlotter class
 \subsection{Method \code{build_plots()}}{
 Build a tower of plots
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{OutputPlotter$build_plots()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{OutputPlotter$build_plots(colum_order)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{colum_order}}{ordered list which the LBI indicators will appear in}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-OutputPlotter-clone"></a>}}
