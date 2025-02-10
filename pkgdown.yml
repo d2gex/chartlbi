@@ -1,10 +1,9 @@
 pandoc: 3.1.11
-pkgdown: 2.0.7
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   running-prettylbi: running-prettylbi.html
-last_built: 2024-03-22T11:10Z
+last_built: 2025-02-10T09:45Z
 urls:
   reference: https://d2gex.github.io/chartlbi/reference
   article: https://d2gex.github.io/chartlbi/articles
-
